@@ -5,3 +5,5 @@
 移出来+头文件可以编译
 但
 ![alt text](image.png)
+对照示例0.1.1版什么都不用做，也不会报错什么没定义
+.config/rtconfig.h

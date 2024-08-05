@@ -498,15 +498,7 @@
 #define NEC_DEVIATION 100
 /* end of Select infrared decoder */
 #define PKG_USING_DRV_INFRARED
-#define INFRARED_SEND
-#define INFRARED_SEND_PWM "pwm4"
-#define INFRARED_PWM_DEV_CHANNEL 3
-#define INFRARED_SEND_HWTIMER "timer15"
-#define INFRARED_MAX_SEND_SIZE 1000
-#define INFRARED_RECEIVE
-#define INFRARED_RECEIVE_PIN 17
-#define INFRARED_RECEIVE_HWTIMER "timer16"
-#define PKG_USING_INFRARED_LATEST_VERSION
+#define PKG_USING_INFRARED_V011
 /* end of peripheral libraries and drivers */
 
 /* AI packages */
