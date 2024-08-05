@@ -417,13 +417,6 @@
 
 /* LVGL: powerful and easy-to-use embedded GUI library */
 
-#define PKG_USING_LVGL
-#define PKG_LVGL_THREAD_PRIO 20
-#define PKG_LVGL_THREAD_STACK_SIZE 4096
-#define PKG_LVGL_DISP_REFR_PERIOD 5
-#define PKG_LVGL_USING_DEMOS
-#define PKG_LVGL_USING_V080311
-#define PKG_LVGL_VER_NUM 0x080311
 /* end of LVGL: powerful and easy-to-use embedded GUI library */
 
 /* u8g2: a monochrome graphic library */
@@ -497,6 +490,23 @@
 /* touch drivers */
 
 /* end of touch drivers */
+#define PKG_USING_INFRARED
+
+/* Select infrared decoder */
+
+#define INFRARED_NEC_DECODER
+#define NEC_DEVIATION 100
+/* end of Select infrared decoder */
+#define PKG_USING_DRV_INFRARED
+#define INFRARED_SEND
+#define INFRARED_SEND_PWM "pwm4"
+#define INFRARED_PWM_DEV_CHANNEL 3
+#define INFRARED_SEND_HWTIMER "timer15"
+#define INFRARED_MAX_SEND_SIZE 1000
+#define INFRARED_RECEIVE
+#define INFRARED_RECEIVE_PIN 17
+#define INFRARED_RECEIVE_HWTIMER "timer16"
+#define PKG_USING_INFRARED_LATEST_VERSION
 /* end of peripheral libraries and drivers */
 
 /* AI packages */
