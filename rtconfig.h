@@ -498,6 +498,9 @@
 #define NEC_DEVIATION 100
 /* end of Select infrared decoder */
 #define PKG_USING_DRV_INFRARED
+#define INFRARED_RECEIVE
+#define INFRARED_RECEIVE_PIN 17
+#define INFRARED_RECEIVE_HWTIMER "timer16"
 #define PKG_USING_INFRARED_V011
 /* end of peripheral libraries and drivers */
 

@@ -1,10 +1,10 @@
 # My_project
 #### LCD 显示温湿度
-![LCD温湿度](/my_pro/lcdtemp.jpg)
+![LCD温湿度](/my_picture/lcdtemp.jpg)
 左上角是（0，0） →x，↓y
 
 ### 简易贪吃蛇
-![alt text](/my_pro/660c6c04fddc1bd3ccbe4255df5d449.jpg)
+![alt text](/my_picture/660c6c04fddc1bd3ccbe4255df5d449.jpg)
 # STM32F407 星火一号开发板 BSP 说明
 
 ## 简介
