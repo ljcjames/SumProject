@@ -173,6 +173,7 @@
 #define RT_WLAN_WORKQUEUE_THREAD_SIZE 2048
 #define RT_WLAN_WORKQUEUE_THREAD_PRIO 15
 #define RT_USING_PIN
+#define RT_USING_HWTIMER
 /* end of Device Drivers */
 
 /* C/C++ and POSIX layer */
@@ -498,9 +499,14 @@
 #define NEC_DEVIATION 100
 /* end of Select infrared decoder */
 #define PKG_USING_DRV_INFRARED
+#define INFRARED_SEND
+#define INFRARED_SEND_PWM "pwm3"
+#define INFRARED_PWM_DEV_CHANNEL 4
+#define INFRARED_SEND_HWTIMER "timer13"
+#define INFRARED_MAX_SEND_SIZE 1000
 #define INFRARED_RECEIVE
-#define INFRARED_RECEIVE_PIN 17
-#define INFRARED_RECEIVE_HWTIMER "timer16"
+#define INFRARED_RECEIVE_PIN 88
+#define INFRARED_RECEIVE_HWTIMER "timer14"
 #define PKG_USING_INFRARED_V011
 /* end of peripheral libraries and drivers */
 
@@ -617,6 +623,9 @@
 #define BSP_USING_UART
 #define BSP_USING_UART1
 #define BSP_USING_UART6
+#define BSP_USING_TIM
+#define BSP_USING_TIM13
+#define BSP_USING_TIM14
 #define BSP_USING_PWM
 #define BSP_USING_PWM3
 #define BSP_USING_PWM3_CH2

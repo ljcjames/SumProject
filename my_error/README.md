@@ -8,7 +8,14 @@
 但
 ![alt text](image.png)
 对照示例0.1.1版什么都不用做，也不会报错什么没定义
-.config/rtconfig.h
+对比.config/rtconfig.h
+但发了红外线也没反应……
+再加回接收、发送
+又是没定义
+对比.config/rtconfig.h
+调整好pin，timer，#define ***timer
+总算可以了
+
 ### GET_PIN(F, 11) 的头文件
 
 ``` c
