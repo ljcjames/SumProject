@@ -15,7 +15,7 @@
 对比.config/rtconfig.h
 调整好pin，timer，#define ***timer
 总算可以了
-
+调整好针脚等可以运行了，但一闪一闪的，估计是线程切换的原因？
 ### GET_PIN(F, 11) 的头文件
 
 ``` c

@@ -55,7 +55,7 @@ extern void myir_entry(void *parameter);
 void ath_init(void);
 void mqt_init(void);
 int ap3_init(void);
-void irf_init(void);
+void inf_init(void);
 
 
 #define EXAMPLE_TRACE(fmt, ...)                        \
@@ -305,7 +305,7 @@ static void mqtt_example_main(void *parameter)
 
 rt_thread_t MQTT_Thread = RT_NULL;
 rt_thread_t Snake_Thread = RT_NULL;
-rt_thread_t Irfrared_Thread = RT_NULL;
+rt_thread_t Infrared_Thread = RT_NULL;
 
 void ath_init(void)
 {
@@ -361,20 +361,20 @@ MSH_CMD_EXPORT_ALIAS(snk_init, snake, "snake game");
 //     return 0;
 
 // }
-void irf_init(void)
+void inf_init(void)
 {
-    Irfrared_Thread = rt_thread_create("Irfrared_Thread", myir_entry, RT_NULL, THREAD_STACK_SIZE, THREAD_PRIORITY, THREAD_TIMESLICE);
+    Infrared_Thread = rt_thread_create("Infrared_Thread", myir_entry, RT_NULL, THREAD_STACK_SIZE, THREAD_PRIORITY, THREAD_TIMESLICE);
 
-    if (Irfrared_Thread != RT_NULL)
+    if (Infrared_Thread != RT_NULL)
     {
-        rt_thread_startup(Irfrared_Thread);
+        rt_thread_startup(Infrared_Thread);
     }
     else
     {
-        rt_kprintf("Irfrared Thread Create Failed!\n");
+        rt_kprintf("Infrared Thread Create Failed!\n");
     }
 }
-MSH_CMD_EXPORT_ALIAS(irf_init, irf, "Irfrared");
+MSH_CMD_EXPORT_ALIAS(inf_init, inf, "Infrared");
 void my_project(void)
 {
     ath_init();
@@ -383,6 +383,6 @@ void my_project(void)
 
     ap3_init();
 
-    irf_init();
+    inf_init();
 }
 MSH_CMD_EXPORT_ALIAS(my_project, myproject, run my project);
