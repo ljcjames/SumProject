@@ -39,7 +39,6 @@ void myir_entry(void *parameter)
             rt_pin_write(PIN_LED_R, PIN_LOW);
             LOG_I("RECEIVE OK: addr:0x%02X key:0x%02X repeat:%d", infrared_data.data.nec.addr,
                     infrared_data.data.nec.key, infrared_data.data.nec.repeat);
-            rt_kprintf("RECEIVE OK\n");
         }
         rt_thread_mdelay(10);
 
