@@ -340,7 +340,7 @@ int ap3_init(void)
 }
 void snk_init(void)
 {
-    Snake_Thread = rt_thread_create("Snake_Thread", snake_entry, RT_NULL, THREAD_STACK_SIZE, THREAD_PRIORITY, THREAD_TIMESLICE);
+    Snake_Thread = rt_thread_create("Snake_Thread", snake_entry, RT_NULL, THREAD_STACK_SIZE, 10, THREAD_TIMESLICE);
 
     if (Snake_Thread != RT_NULL)
     {

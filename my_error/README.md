@@ -16,6 +16,10 @@
 调整好pin，timer，#define ***timer
 总算可以了
 调整好针脚等可以运行了，但一闪一闪的，估计是线程切换的原因？
+注释掉红外线线程，也没有用，改了优先级终于可以了
+``` c
+Snake_Thread = rt_thread_create("Snake_Thread", snake_entry, RT_NULL, THREAD_STACK_SIZE, 10, THREAD_TIMESLICE);
+```
 ### GET_PIN(F, 11) 的头文件
 
 ``` c
