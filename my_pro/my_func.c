@@ -86,7 +86,7 @@ void xy_sink()
 void snake_address(int x, int y, int r, const rt_uint16_t da)
 {
     int f = 0; // 使蛇身成节
-    if (r > 5)
+    if (r > 5 && da != WHITE)
     {
         f = 1;
     }
