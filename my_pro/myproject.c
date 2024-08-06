@@ -10,7 +10,8 @@
 #include <dfs_posix.h>
 #include <drv_lcd.h>
 #include "mysnake.h"
-
+#include "infrared.h"
+#include <ulog.h>
 
 char DEMO_PRODUCT_KEY[IOTX_PRODUCT_KEY_LEN + 1] = {0};
 char DEMO_DEVICE_NAME[IOTX_DEVICE_NAME_LEN + 1] = {0};
@@ -49,14 +50,14 @@ rt_uint16_t ps_data;
 float brightness;
 int lcd_y;
 int int_tmp;
+struct infrared_decoder_data infrared_data;
 
-// extern void myir_entry(void *parameter);
+extern void myir_entry(void *parameter);
 
 void ath_init(void);
 void mqt_init(void);
 int ap3_init(void);
-// void inf_init(void);
-
+void inf_init(void);
 
 #define EXAMPLE_TRACE(fmt, ...)                        \
     do                                                 \
@@ -186,10 +187,13 @@ void tmp_payload(void)
     Temp = aht10_read_temperature(Dev);
     brightness = ap3216c_read_ambient_light(dev);
     ps_data = ap3216c_read_ps_data(dev);
-    if (ps_data > 14)
-    {
-        page_chosen = (page_chosen % PAGE_MAX) + 1;
-    }
+    // if (infrared_read("nec", &infrared_data) == RT_EOK)
+    // {
+    //     /* 读取到红外数据，红灯亮起 */
+    //     // rt_pin_write(PIN_LED_R, PIN_LOW);
+    //     LOG_I("RECEIVE OK: addr:0x%02X key:0x%02X repeat:%d", infrared_data.data.nec.addr,
+    //           infrared_data.data.nec.key, infrared_data.data.nec.repeat);
+    // }
     // icm20608_get_accel(icm20608_device_t dev, rt_int16_t *accel_x, rt_int16_t *accel_y, rt_int16_t *accel_z)
     // memset(tmp, 0, sizeof(tmp));
     // sprintf(tmp, "Temp: %.1f;Humi: %.1f;Count: %d\n", Temp, Humi,++cnt);
@@ -198,6 +202,10 @@ void tmp_payload(void)
     if (page_chosen == 2)
     {
         show_lcd();
+    }
+    if (ps_data > 14)
+    {
+        page_chosen = (page_chosen % PAGE_MAX) + 1;
     }
     sprintf(tmp, "{\"params\":{\"temperature\":%.2f,\"humidity\":%.2f,\"LightLux\":%.2f,\"Psdata\":%d,\"Snakelen\":%d}}", Temp, Humi, brightness, ps_data, snake_len);
     return;
@@ -305,7 +313,7 @@ static void mqtt_example_main(void *parameter)
 
 rt_thread_t MQTT_Thread = RT_NULL;
 rt_thread_t Snake_Thread = RT_NULL;
-// rt_thread_t Infrared_Thread = RT_NULL;
+rt_thread_t Infrared_Thread = RT_NULL;
 
 void ath_init(void)
 {
@@ -361,28 +369,31 @@ MSH_CMD_EXPORT_ALIAS(snk_init, snake, "snake game");
 //     return 0;
 
 // }
-// void inf_init(void)
-// {
-//     Infrared_Thread = rt_thread_create("Infrared_Thread", myir_entry, RT_NULL, THREAD_STACK_SIZE, THREAD_PRIORITY, THREAD_TIMESLICE);
+void inf_init(void)
+{
+    Infrared_Thread = rt_thread_create("Infrared_Thread", myir_entry, RT_NULL, THREAD_STACK_SIZE, THREAD_PRIORITY, THREAD_TIMESLICE);
 
-//     if (Infrared_Thread != RT_NULL)
-//     {
-//         rt_thread_startup(Infrared_Thread);
-//     }
-//     else
-//     {
-//         rt_kprintf("Infrared Thread Create Failed!\n");
-//     }
-// }
-// MSH_CMD_EXPORT_ALIAS(inf_init, inf, "Infrared");
+    if (Infrared_Thread != RT_NULL)
+    {
+        rt_thread_startup(Infrared_Thread);
+    }
+    else
+    {
+        rt_kprintf("Infrared Thread Create Failed!\n");
+    }
+}
+MSH_CMD_EXPORT_ALIAS(inf_init, inf, "Infrared");
 void my_project(void)
 {
+    // /* 选择 NEC 解码器 */
+    // ir_select_decoder("nec");
+
     ath_init();
 
     mqt_init();
 
     ap3_init();
 
-    // inf_init();
+    inf_init();
 }
 MSH_CMD_EXPORT_ALIAS(my_project, myproject, run my project);

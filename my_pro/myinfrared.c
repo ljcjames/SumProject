@@ -12,7 +12,35 @@
 /* 配置 LED 灯引脚 */
 #define PIN_LED_B GET_PIN(F, 11) // PF11 :  LED_B        --> LED
 #define PIN_LED_R GET_PIN(F, 12) // PF12 :  LED_R        --> LED
+#define PAGE_MAX 2
 
+extern rt_atomic_t now_direction;
+extern rt_atomic_t snake_pressed;
+extern rt_atomic_t page_chosen ;
+extern int snake_max;
+extern char tmp[10];
+
+void snake_compare(rt_uint8_t key)
+{
+    rt_sprintf(tmp, "%02X", key);
+    rt_atomic_store(&snake_pressed, snake_max + 1);
+
+    if (rt_strcmp(tmp, "30") == 0)
+        if (rt_atomic_load(&now_direction) != 2)
+            rt_atomic_store(&now_direction, 0);
+
+    if (rt_strcmp(tmp, "E8") == 0)
+        if (rt_atomic_load(&now_direction) != 3)
+            rt_atomic_store(&now_direction, 1);
+    if (rt_strcmp(tmp, "B0") == 0)
+        if (rt_atomic_load(&now_direction) != 0)
+            rt_atomic_store(&now_direction, 2);
+    if (rt_strcmp(tmp, "68") == 0)
+        if (rt_atomic_load(&now_direction) != 1)
+            rt_atomic_store(&now_direction, 3);
+    if (rt_strcmp(tmp, "88") == 0)
+        page_chosen = (page_chosen % PAGE_MAX) + 1;
+}
 
 void myir_entry(void *parameter)
 {
@@ -31,25 +59,23 @@ void myir_entry(void *parameter)
     rt_pin_write(PIN_LED_R, PIN_HIGH);
     rt_pin_write(PIN_LED_B, PIN_HIGH);
 
-    while (count > 0)
+    while (1)
     {
         if (infrared_read("nec", &infrared_data) == RT_EOK)
         {
             /* 读取到红外数据，红灯亮起 */
             rt_pin_write(PIN_LED_R, PIN_LOW);
             LOG_I("RECEIVE OK: addr:0x%02X key:0x%02X repeat:%d", infrared_data.data.nec.addr,
-                    infrared_data.data.nec.key, infrared_data.data.nec.repeat);
+                  infrared_data.data.nec.key, infrared_data.data.nec.repeat);
+            snake_compare(infrared_data.data.nec.key);
         }
-        rt_thread_mdelay(10);
+        rt_thread_mdelay(50);
 
         /* 熄灭蓝灯 */
         rt_pin_write(PIN_LED_B, PIN_HIGH);
         /* 熄灭红灯 */
         rt_pin_write(PIN_LED_R, PIN_HIGH);
-        count++;
         // if( count % 100 == 0)
         // rt_kprintf("count = %d\n", count);
     }
 }
-
-

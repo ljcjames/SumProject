@@ -20,6 +20,9 @@
 ``` c
 Snake_Thread = rt_thread_create("Snake_Thread", snake_entry, RT_NULL, THREAD_STACK_SIZE, 10, THREAD_TIMESLICE);
 ```
+不注释又闪了，
+加到myproject，没唤醒时没事，唤醒后闪，重启也闪
+![alt text](image-2.png)
 ### GET_PIN(F, 11) 的头文件
 
 ``` c
@@ -43,3 +46,12 @@ Snake_Thread = rt_thread_create("Snake_Thread", snake_entry, RT_NULL, THREAD_STA
 | 0xA8 | 静音 |
 | 0x88 | 菜单 |
 | 0x28 | 退出 |
+
+### 等待消息
+写成这样，导致一直等待，所以一直没反应
+``` c
+if(page_chosen == 1)
+{
+    rt_mdelay(1000);
+}
+```

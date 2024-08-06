@@ -110,7 +110,7 @@ void snake_entry(void *parameter)
             snake_head = (snake_head + 1) % (SNAKE_MAX);
             snake_list[snake_head][0] = new_head_x;
             snake_list[snake_head][1] = new_head_y;
-            rt_thread_mdelay(900);
         }
+        rt_thread_mdelay(900);
     }
 }
