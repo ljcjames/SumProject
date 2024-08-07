@@ -199,14 +199,14 @@ void tmp_payload(void)
     // sprintf(tmp, "Temp: %.1f;Humi: %.1f;Count: %d\n", Temp, Humi,++cnt);
     // rt_kprintf("\n%f %f tmp:%s\n",Humi,Temp,tmp);
     // make_file();
-    if (page_chosen == 2)
-    {
-        show_lcd();
-    }
-    if (ps_data > 14)
-    {
-        page_chosen = (page_chosen % PAGE_MAX) + 1;
-    }
+    // if (page_chosen == 2)
+    // {
+    //     show_lcd();
+    // }
+    // if (ps_data > 14)
+    // {
+    //     page_chosen = (page_chosen % PAGE_MAX) + 1;
+    // }
     sprintf(tmp, "{\"params\":{\"temperature\":%.2f,\"humidity\":%.2f,\"LightLux\":%.2f,\"Psdata\":%d,\"Snakelen\":%d}}", Temp, Humi, brightness, ps_data, snake_len);
     return;
 }

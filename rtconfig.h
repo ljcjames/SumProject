@@ -17,6 +17,9 @@
 #define RT_USING_IDLE_HOOK
 #define RT_IDLE_HOOK_LIST_SIZE 4
 #define IDLE_THREAD_STACK_SIZE 1024
+#define RT_USING_TIMER_SOFT
+#define RT_TIMER_THREAD_PRIO 4
+#define RT_TIMER_THREAD_STACK_SIZE 512
 
 /* kservice optimization */
 
@@ -203,6 +206,7 @@
 
 /* end of Interprocess Communication (IPC) */
 /* end of POSIX (Portable Operating System Interface) layer */
+#define RT_USING_CPLUSPLUS
 /* end of C/C++ and POSIX layer */
 
 /* Network */
@@ -458,6 +462,8 @@
 /* Micrium: Micrium software products porting for RT-Thread */
 
 /* end of Micrium: Micrium software products porting for RT-Thread */
+#define PKG_USING_PERF_COUNTER
+#define PKG_USING_PERF_COUNTER_V2241
 /* end of system packages */
 
 /* peripheral libraries and drivers */
@@ -499,14 +505,9 @@
 #define NEC_DEVIATION 100
 /* end of Select infrared decoder */
 #define PKG_USING_DRV_INFRARED
-#define INFRARED_SEND
-#define INFRARED_SEND_PWM "pwm3"
-#define INFRARED_PWM_DEV_CHANNEL 4
-#define INFRARED_SEND_HWTIMER "timer13"
-#define INFRARED_MAX_SEND_SIZE 1000
 #define INFRARED_RECEIVE
 #define INFRARED_RECEIVE_PIN 88
-#define INFRARED_RECEIVE_HWTIMER "timer14"
+#define INFRARED_RECEIVE_HWTIMER "timer11"
 #define PKG_USING_INFRARED_V011
 /* end of peripheral libraries and drivers */
 
@@ -624,6 +625,7 @@
 #define BSP_USING_UART1
 #define BSP_USING_UART6
 #define BSP_USING_TIM
+#define BSP_USING_TIM11
 #define BSP_USING_TIM13
 #define BSP_USING_TIM14
 #define BSP_USING_PWM

@@ -25,21 +25,21 @@ void snake_compare(rt_uint8_t key)
     rt_sprintf(tmp, "%02X", key);
     rt_atomic_store(&snake_pressed, snake_max + 1);
 
-    if (rt_strcmp(tmp, "30") == 0)
+    if (rt_strcmp(tmp, "30") == 0|| rt_strcmp(tmp, "53") == 0)
         if (rt_atomic_load(&now_direction) != 2)
             rt_atomic_store(&now_direction, 0);
 
-    if (rt_strcmp(tmp, "E8") == 0)
+    if (rt_strcmp(tmp, "E8") == 0|| rt_strcmp(tmp, "99") == 0)
         if (rt_atomic_load(&now_direction) != 3)
             rt_atomic_store(&now_direction, 1);
-    if (rt_strcmp(tmp, "B0") == 0)
+    if (rt_strcmp(tmp, "B0") == 0|| rt_strcmp(tmp, "4B") == 0)
         if (rt_atomic_load(&now_direction) != 0)
             rt_atomic_store(&now_direction, 2);
-    if (rt_strcmp(tmp, "68") == 0)
+    if (rt_strcmp(tmp, "68") == 0|| rt_strcmp(tmp, "83") == 0)
         if (rt_atomic_load(&now_direction) != 1)
             rt_atomic_store(&now_direction, 3);
-    if (rt_strcmp(tmp, "88") == 0)
-        page_chosen = (page_chosen % PAGE_MAX) + 1;
+    // if (rt_strcmp(tmp, "88") == 0)
+    //     page_chosen = (page_chosen % PAGE_MAX) + 1;
 }
 
 void myir_entry(void *parameter)

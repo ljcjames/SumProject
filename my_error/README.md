@@ -17,6 +17,8 @@
 总算可以了
 调整好针脚等可以运行了，但一闪一闪的，估计是线程切换的原因？
 注释掉红外线线程，也没有用，改了优先级终于可以了
+**破案了！lcd、红外线用的同一个timer14，[哭笑不得]😂**
+换了个timer11就不闪了！！！
 ``` c
 Snake_Thread = rt_thread_create("Snake_Thread", snake_entry, RT_NULL, THREAD_STACK_SIZE, 10, THREAD_TIMESLICE);
 ```
@@ -55,3 +57,46 @@ if(page_chosen == 1)
     rt_mdelay(1000);
 }
 ```
+
+### 附：ringbuffer（环形缓冲区）
+注意：RT-Thread 的 ringbuffer 组件并未提供线程阻塞的功能，因此 ringbuffer 本质上是一个全局共享的对象，多线程使用时注意使用互斥锁保护。
+![alt text](image-3.png)
+``` c
+#include <rtthread.h>
+#include <ipc/ringbuffer.h>
+
+typedef struct rb_example {
+    int a;
+    int b;
+} rb_example_t;
+
+int ringbuffer_example(void)
+{
+    rb_example_t data = {
+        .a = 1,
+        .b = 2,
+    };
+
+    struct rt_ringbuffer * rb = rt_ringbuffer_create(sizeof(rb_example_t) * 2);
+    RT_ASSERT(rb != RT_NULL);
+
+    rt_kprintf("Put data to   ringbuffer, a: %d b: %d size: %d\n", data.a, data.b, sizeof(data));
+    rt_ringbuffer_put(rb, (rt_uint8_t *)&data, sizeof(data));
+
+
+    rb_example_t recv_data;
+    rt_size_t recv = rt_ringbuffer_get(rb, (rt_uint8_t *)&recv_data, sizeof(recv_data));
+    RT_ASSERT(recv == sizeof(recv_data));
+    rt_kprintf("Get data from ringbuffer, a: %d b: %d size: %d\n", recv_data.a, recv_data.b, sizeof(recv_data));
+
+    return 0;
+}
+
+MSH_CMD_EXPORT(ringbuffer_example, ringbuffer example);
+
+```
+
+### union（联合体）
+约等于结构体
+1. 可以通过v.u来操作一个uint32类型的对象，当需要将uint32变量的低端字节看做一个字符的时候，只需要访问v.c就可以了
+2. 共享同一块大小的内存
