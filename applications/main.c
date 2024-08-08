@@ -39,6 +39,7 @@ int main(void)
     rt_wlan_config_autoreconnect(RT_TRUE);
     rt_wlan_connect("Dong", "abcd07691234");
     system("myproject");
+    // system("mqtt");
     mytime();
 
     /* init Wi-Fi auto connect feature */

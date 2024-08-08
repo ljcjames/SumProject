@@ -31,6 +31,8 @@ char buffer[1026] = {};
 char tmp[1026];
 extern int snake_len;
 rt_atomic_t page_chosen = 1;
+rt_atomic_t page_first = 1;
+rt_atomic_t page_stop = 0;
 
 #define PAGE_MAX 2
 
@@ -199,14 +201,21 @@ void tmp_payload(void)
     // sprintf(tmp, "Temp: %.1f;Humi: %.1f;Count: %d\n", Temp, Humi,++cnt);
     // rt_kprintf("\n%f %f tmp:%s\n",Humi,Temp,tmp);
     // make_file();
-    // if (page_chosen == 2)
-    // {
-    //     show_lcd();
-    // }
-    // if (ps_data > 14)
-    // {
-    //     page_chosen = (page_chosen % PAGE_MAX) + 1;
-    // }
+    if (page_chosen == 2 && !page_stop)
+    {
+        if (page_first)
+        {
+            my_round(20);
+            page_first = 0;
+        }
+
+        show_lcd();
+    }
+    if (ps_data > 14)
+    {
+        page_chosen = (page_chosen % PAGE_MAX) + 1;
+        page_first = 1;
+    }
     sprintf(tmp, "{\"params\":{\"temperature\":%.2f,\"humidity\":%.2f,\"LightLux\":%.2f,\"Psdata\":%d,\"Snakelen\":%d}}", Temp, Humi, brightness, ps_data, snake_len);
     return;
 }
@@ -338,6 +347,7 @@ void mqt_init(void)
         rt_kprintf("MQTT Thread Create Failed!\n");
     }
 }
+// MSH_CMD_EXPORT_ALIAS(mqt_init, mqtt, run my mqtt);
 int ap3_init(void)
 {
     const char *i2c_bus_name = "i2c2";

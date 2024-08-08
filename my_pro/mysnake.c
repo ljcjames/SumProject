@@ -8,10 +8,12 @@
 
 #define LCD_MAX 240
 #define SNAKE_SIZE 20
-#define SNAKE_MAX LCD_MAX / SNAKE_SIZE
+#define SNAKE_MAX (LCD_MAX / SNAKE_SIZE)
 rt_atomic_t now_direction = 3;
 rt_atomic_t snake_pressed = 0;
 extern rt_atomic_t page_chosen;
+extern rt_atomic_t page_first;
+extern rt_atomic_t page_stop;
 int snake_max = SNAKE_MAX * 3;
 int snake_len = 3;
 
@@ -51,13 +53,26 @@ void snake_entry(void *parameter)
     snake_address(snake_list[2][0], snake_list[2][1], SNAKE_SIZE, BLACK);
     snake_food[0] = rand() % SNAKE_MAX;
     snake_food[1] = rand() % SNAKE_MAX;
-    snake_address(snake_food[0], snake_food[1], SNAKE_SIZE, GREEN);
+    // snake_address(snake_food[0], snake_food[1], SNAKE_SIZE, GREEN);
     int new_head_x = 0, new_head_y = 0;
-    int new_direction = 0;
+    int new_direction = 0,snake_now=0;
     while (1)
     {
-        if (page_chosen == 1)
+        if (page_chosen == 1&&!page_stop)
         {
+            if (page_first == 1)
+            {
+                page_first = 0;
+                lcd_fill(0, 0, 240, 240, WHITE);
+                snake_address(snake_food[0], snake_food[1], SNAKE_SIZE, GREEN);
+                snake_now = snake_tail-1;
+                // for (int i = 0; i = snake_len && i < SNAKE_MAX - 1; i++)
+                do{
+                    snake_now=(snake_now+1)%SNAKE_MAX;
+                    snake_address(snake_list[snake_now][0], snake_list[snake_now][1], SNAKE_SIZE, BLACK);
+                }while(snake_now!=snake_head);
+            }
+
             if (!snake_pressed)
             {
                 // 50%的概率保持当前方向，20%的概率随机改变方向
