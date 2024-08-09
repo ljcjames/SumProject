@@ -58,10 +58,12 @@ void snake_entry(void *parameter)
     int new_direction = 0,snake_now=0;
     while (1)
     {
+
         if (page_chosen == 1&&!page_stop)
         {
             if (page_first == 1)
             {
+                rt_kprintf("page:snake\n");
                 page_first = 0;
                 lcd_fill(0, 0, 240, 240, WHITE);
                 snake_address(snake_food[0], snake_food[1], SNAKE_SIZE, GREEN);

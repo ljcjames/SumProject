@@ -1,6 +1,8 @@
-# My_project
+# 红外遥控贪吃蛇/显示+上传温度等数据
 ### 红外遥控贪吃蛇
+
 ![alt text](b237ba08cf67df9f82eaf7ebc1e8855.jpg)
+
 ### 红外遥控器
 | 编号（key）| 功能 |
 | :----: | :----: |
@@ -14,12 +16,52 @@
 | 0x88 | 菜单 |
 | 0x28 | 退出 |
 
+
 ### LCD 显示温湿度
 ![LCD温湿度](/my_picture/lcdtemp.jpg)
 左上角是（0，0） →x，↓y
 
 ### 简易贪吃蛇
 ![alt text](/my_picture/660c6c04fddc1bd3ccbe4255df5d449.jpg)
+
+### 页面切换、冻结（贪吃蛇与数据显示）
+``` c
+// 菜单（切换页面）
+    if (repeat == 0 && (rt_strcmp(tmp, "88") == 0 || rt_strcmp(tmp, "11") == 0))
+    {
+        page_chosen = (page_chosen % PAGE_MAX) + 1;
+        page_first = 1;
+        rt_kprintf("page_chosen = %d\n", page_chosen);
+    }
+    // 确认（暂停、页面冻结）
+    if (repeat == 0 && (rt_strcmp(tmp, "73") == 0))
+    {
+        page_stop = (page_stop + 1) % 2;
+        if (page_stop == 1)
+        {
+            lcd_show_string(240 - 24 * 3, 240 - 24, 24, "Stop");
+        }
+        else
+        {
+            lcd_show_string(240 - 24 * 3, 240 - 24, 24, "    ");
+        }
+    }
+```
+
+### MQTT上传到阿里云
+#### 光照强度
+![alt text](my_picture/光照强度.png) 
+#### 接近感应
+![alt text](my_picture/接近感应.png) 
+#### 蛇长
+![alt text](my_picture/蛇长.png) 
+#### 湿度
+![alt text](my_picture/湿度.png) 
+#### 温度
+![alt text](my_picture/温度.png)
+
+### 显示时间
+
 
 # STM32F407 星火一号开发板 BSP 说明
 

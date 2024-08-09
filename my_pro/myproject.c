@@ -205,13 +205,14 @@ void tmp_payload(void)
     {
         if (page_first)
         {
+            rt_kprintf("page:Data\n");
             my_round(20);
             page_first = 0;
         }
 
         show_lcd();
     }
-    if (ps_data > 14)
+    if (ps_data > 1022)
     {
         page_chosen = (page_chosen % PAGE_MAX) + 1;
         page_first = 1;
