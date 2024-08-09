@@ -129,3 +129,46 @@ MSH_CMD_EXPORT(ringbuffer_example, ringbuffer example);
    ![alt text](image-9.png)
    ![alt text](image-8.png)
    终于发现他俩**用的同一个pwm**，修改为timer11，也最终可以正常运行了
+
+
+一些失败的尝试
+board\ports\lcd\drv_lcd.c
+``` c
+void lcdFrush(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1,uint16_t *color)
+{
+    LCD_WriteReg(0x2A);
+    LCD_WriteData16(x0);
+    LCD_WriteData16(x1);
+
+    LCD_WriteReg(0x2B);
+    LCD_WriteData16(y0);
+    LCD_WriteData16(y1);
+    LCD_WriteReg(0x2C);
+
+    for (int i = 0; i < (x1 - x0 + 1) * (y1 - y0 + 1); i++)
+    {
+        LCD_WriteData16(color[i]);
+    }
+}
+```
+board\ports\lvgl\lv_port_disp.c
+``` c
+lcdFrush(area->x1, area->y1, area->x2, area->y2,(uint16_t*)color_p);
+```
+board\ports\lvgl\lv_port_indev.c
+``` c
+void touchpad_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
+{
+
+}
+void lv_port_indev_init(void)
+{
+    static lv_indev_drv_t indev_drv;
+    lv_indev_drv_init(&indev_drv);
+    indev_drv.type = LV_INDEV_TYPE_POINTER;
+    indev_drv.read_cb = touchpad_read;
+
+    lv_indev_drv_register(&indev_drv);
+}
+
+```
