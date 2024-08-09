@@ -61,7 +61,24 @@
 ![alt text](my_picture/温度.png)
 
 ### 显示时间
-
+[参考(https://blog.csdn.net/toopoo/article/details/113665077)](https://blog.csdn.net/toopoo/article/details/113665077)
+``` c
+void greattime()
+{
+    time_t cur_time;
+    struct tm *info;
+    cur_time = ntp_get_time(RT_NULL);
+    info=localtime(&cur_time);
+    strftime(tmp, 80, "%Y-%m-%d", info);
+    lcd_show_string(40, 240/2-32-24, 32, tmp);
+    strftime(tmp, 80, "%H:%M:%S", info);
+    lcd_show_string(50, 240/2+24, 32, tmp);
+    if (cur_time)
+    {
+        rt_kprintf("NTP Server Time: %s", ctime((const time_t *)&cur_time));
+    }
+}
+```
 
 # STM32F407 星火一号开发板 BSP 说明
 

@@ -12,6 +12,7 @@
 #include "mysnake.h"
 #include "infrared.h"
 #include <ulog.h>
+#include "my_func.h"
 
 char DEMO_PRODUCT_KEY[IOTX_PRODUCT_KEY_LEN + 1] = {0};
 char DEMO_DEVICE_NAME[IOTX_DEVICE_NAME_LEN + 1] = {0};
@@ -209,8 +210,8 @@ void tmp_payload(void)
             my_round(20);
             page_first = 0;
         }
-
-        show_lcd();
+        greattime();
+        // show_lcd();
     }
     if (ps_data > 1022)
     {

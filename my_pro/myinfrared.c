@@ -7,7 +7,7 @@
 #define DBG_TAG "main"
 #define DBG_LVL DBG_LOG
 #include <rtdbg.h>
-#include <ulog.h>
+// #include <ulog.h>
 #include <drv_lcd.h>
 
 /* 配置 LED 灯引脚 */
@@ -21,7 +21,7 @@ extern rt_atomic_t page_chosen;
 extern rt_atomic_t page_first;
 extern rt_atomic_t page_stop;
 extern int snake_max;
-extern char tmp[10];
+extern char tmp[];
 
 void snake_compare(rt_uint8_t key, rt_uint8_t repeat)
 {

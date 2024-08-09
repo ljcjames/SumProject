@@ -5,6 +5,7 @@
 
                         // 当前方向
 void mytime();
+void greattime();
 void xy_round(int x, int y, int x2, int y2, int r, int ii);
 void my_round(int r);
 void xy_sink();

@@ -4,8 +4,11 @@
 #include <stdlib.h>
 #include <drv_lcd.h>
 #include <ntp.h>
+#include <time.h>
 
 #define LCD_MAX 240
+
+extern char tmp[];
 void lcd_black(int x, int y)
 {
     lcd_address_set(x, y, x, y);
@@ -40,6 +43,21 @@ void mytime()
         rt_kprintf("NTP Server Time: %s", ctime((const time_t *)&cur_time));
     }
     lcd_show_string(20, 2, 16, ctime((const time_t *)&cur_time));
+}
+void greattime()
+{
+    time_t cur_time;
+    struct tm *info;
+    cur_time = ntp_get_time(RT_NULL);
+    info=localtime(&cur_time);
+    strftime(tmp, 80, "%Y-%m-%d", info);
+    lcd_show_string(40, 240/2-32-24, 32, tmp);
+    strftime(tmp, 80, "%H:%M:%S", info);
+    lcd_show_string(50, 240/2+24, 32, tmp);
+    if (cur_time)
+    {
+        rt_kprintf("NTP Server Time: %s", ctime((const time_t *)&cur_time));
+    }
 }
 
 void xy_round(int x, int y, int x2, int y2, int r, int ii)
