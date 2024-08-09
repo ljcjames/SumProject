@@ -35,7 +35,6 @@ rt_atomic_t page_chosen = 1;
 rt_atomic_t page_first = 1;
 rt_atomic_t page_stop = 0;
 
-#define PAGE_MAX 2
 
 #define GPIO_LED_B GET_PIN(F, 11)
 #define GPIO_LED_R GET_PIN(F, 12)

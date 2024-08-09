@@ -61,6 +61,7 @@
 ![alt text](my_picture/温度.png)
 
 ### 显示时间
+![显示时间.jpg](my_picture/显示时间.jpg)
 [参考(https://blog.csdn.net/toopoo/article/details/113665077)](https://blog.csdn.net/toopoo/article/details/113665077)
 ``` c
 void greattime()

@@ -3,6 +3,7 @@
 #include <board.h>
 #include "infrared.h"
 #include <drv_gpio.h>
+#include "my_func.h"
 
 #define DBG_TAG "main"
 #define DBG_LVL DBG_LOG
@@ -13,7 +14,6 @@
 /* 配置 LED 灯引脚 */
 #define PIN_LED_B GET_PIN(F, 11) // PF11 :  LED_B        --> LED
 #define PIN_LED_R GET_PIN(F, 12) // PF12 :  LED_R        --> LED
-#define PAGE_MAX 2
 
 extern rt_atomic_t now_direction;
 extern rt_atomic_t snake_pressed;
