@@ -54,10 +54,10 @@ void greattime()
     lcd_show_string(40, 240/2-32-24, 32, tmp);
     strftime(tmp, 80, "%H:%M:%S", info);
     lcd_show_string(50, 240/2+24, 32, tmp);
-    if (cur_time)
-    {
-        rt_kprintf("NTP Server Time: %s", ctime((const time_t *)&cur_time));
-    }
+    // if (cur_time)
+    // {
+    //     rt_kprintf("NTP Server Time: %s", ctime((const time_t *)&cur_time));
+    // }
 }
 
 void xy_round(int x, int y, int x2, int y2, int r, int ii)

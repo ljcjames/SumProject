@@ -35,7 +35,6 @@ rt_atomic_t page_chosen = 1;
 rt_atomic_t page_first = 1;
 rt_atomic_t page_stop = 0;
 
-
 #define GPIO_LED_B GET_PIN(F, 11)
 #define GPIO_LED_R GET_PIN(F, 12)
 
@@ -60,6 +59,7 @@ void ath_init(void);
 void mqt_init(void);
 int ap3_init(void);
 void inf_init(void);
+void tst_init(void);
 
 #define EXAMPLE_TRACE(fmt, ...)                        \
     do                                                 \
@@ -234,8 +234,8 @@ void tmp_payload(void)
 void test_lcd()
 {
     // show_str(10, 10+24+32+24+32, 100, 32, "你好", 32);
-    ath_init();
-    ap3_init();
+    // ath_init();
+    // ap3_init();
     while (1)
     {
         tmp_payload();
@@ -246,7 +246,7 @@ MSH_CMD_EXPORT(test_lcd, run my project);
 static int example_publish(void *handle)
 {
 
-    tmp_payload();
+    // tmp_payload();
     int res = 0;
     const char *fmt = "/sys/%s/%s/thing/event/property/post";
     // /k1lyriw1yGj/${deviceName}/user/get
@@ -335,6 +335,7 @@ static void mqtt_example_main(void *parameter)
 rt_thread_t MQTT_Thread = RT_NULL;
 rt_thread_t Snake_Thread = RT_NULL;
 rt_thread_t Infrared_Thread = RT_NULL;
+rt_thread_t Test_Thread = RT_NULL;
 
 void ath_init(void)
 {
@@ -405,6 +406,20 @@ void inf_init(void)
     }
 }
 MSH_CMD_EXPORT_ALIAS(inf_init, inf, "Infrared");
+void tst_init(void)
+{
+    Test_Thread = rt_thread_create("Test_Thread", test_lcd, RT_NULL, THREAD_STACK_SIZE, THREAD_PRIORITY, THREAD_TIMESLICE);
+
+    if (Test_Thread != RT_NULL)
+    {
+        rt_thread_startup(Test_Thread);
+    }
+    else
+    {
+        rt_kprintf("Test_Thread Create Failed!\n");
+    }
+}
+MSH_CMD_EXPORT_ALIAS(tst_init, no_mqtt, "Infrared");
 void my_project(void)
 {
     // /* 选择 NEC 解码器 */
@@ -417,5 +432,7 @@ void my_project(void)
     ap3_init();
 
     inf_init();
+
+    tst_init();//不知道为什么不能在mqtt_init()之前，不然报错
 }
 MSH_CMD_EXPORT_ALIAS(my_project, myproject, run my project);
