@@ -205,12 +205,23 @@ void tmp_payload(void)
     {
         if (page_first)
         {
+            // lcd_fill(40, 240/2-32-24, 240-50, 240/2+24+32, WHITE);
             rt_kprintf("page:Data\n");
             my_round(20);
             page_first = 0;
         }
+        show_lcd();
+    }
+    if (page_chosen == 3 && !page_stop)
+    {
+        if (page_first)
+        {
+            lcd_fill(0, 0, 240, 240, WHITE);
+            rt_kprintf("page:Time\n");
+            my_round(20);
+            page_first = 0;
+        }
         greattime();
-        // show_lcd();
     }
     if (ps_data > 1022)
     {
@@ -359,7 +370,7 @@ int ap3_init(void)
 }
 void snk_init(void)
 {
-    Snake_Thread = rt_thread_create("Snake_Thread", snake_entry, RT_NULL, THREAD_STACK_SIZE, 10, THREAD_TIMESLICE);
+    Snake_Thread = rt_thread_create("Snake_Thread", snake_entry, RT_NULL, THREAD_STACK_SIZE, THREAD_PRIORITY, THREAD_TIMESLICE);
 
     if (Snake_Thread != RT_NULL)
     {

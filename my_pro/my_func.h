@@ -2,7 +2,7 @@
 #include <rtthread.h>
 #include <stdio.h>
 #include <malloc.h>
-#define PAGE_MAX 2
+#define PAGE_MAX 3
                         // 当前方向
 void mytime();
 void greattime();
