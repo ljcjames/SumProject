@@ -360,7 +360,7 @@ void mqt_init(void)
         rt_kprintf("MQTT Thread Create Failed!\n");
     }
 }
-// MSH_CMD_EXPORT_ALIAS(mqt_init, mqtt, run my mqtt);
+MSH_CMD_EXPORT_ALIAS(mqt_init, mqtt, run my mqtt);
 int ap3_init(void)
 {
     const char *i2c_bus_name = "i2c2";
@@ -427,7 +427,7 @@ void my_project(void)
 
     ath_init();
 
-    mqt_init();
+    // mqt_init();
 
     ap3_init();
 
