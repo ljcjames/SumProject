@@ -14,6 +14,15 @@
 #include <ulog.h>
 #include "my_func.h"
 
+#define THREAD_PRIORITY 25
+#define THREAD_STACK_SIZE 4096
+#define THREAD_TIMESLICE 5
+
+rt_thread_t MQTT_Thread = RT_NULL;
+rt_thread_t Snake_Thread = RT_NULL;
+rt_thread_t Infrared_Thread = RT_NULL;
+rt_thread_t Test_Thread = RT_NULL;
+
 char DEMO_PRODUCT_KEY[IOTX_PRODUCT_KEY_LEN + 1] = {0};
 char DEMO_DEVICE_NAME[IOTX_DEVICE_NAME_LEN + 1] = {0};
 char DEMO_DEVICE_SECRET[IOTX_DEVICE_SECRET_LEN + 1] = {0};
@@ -34,6 +43,10 @@ extern int snake_len;
 rt_atomic_t page_chosen = 1;
 rt_atomic_t page_first = 1;
 rt_atomic_t page_stop = 0;
+rt_atomic_t last_stop = 0;
+rt_atomic_t mqtt_enable = 0;
+
+void *pclient = NULL;
 
 #define GPIO_LED_B GET_PIN(F, 11)
 #define GPIO_LED_R GET_PIN(F, 12)
@@ -223,6 +236,36 @@ void tmp_payload(void)
         }
         greattime();
     }
+    if (page_chosen == 4 && !page_stop)
+    {
+        if (page_first)
+        {
+            lcd_fill(0, 0, 240, 240, WHITE);
+            lcd_show_string(240 / 2 - 24, 240 / 2 - 12, 24, "MQTT");
+            rt_kprintf("page:MQTT\n");
+            my_round(20);
+            page_first = 0;
+        }
+        if (!mqtt_enable)
+        {
+            lcd_show_string(240 / 2 - 24 * 2, 240 / 2 + 12, 32, "disable");
+            if (last_stop)
+            {
+                last_stop = 0;
+                IOT_MQTT_Destroy(&pclient);
+                rt_thread_delete(MQTT_Thread);
+            }
+        }
+        else
+        {
+            lcd_show_string(240 / 2 - 24 * 2, 240 / 2 + 12, 32, "enable ");
+            if (mqtt_enable && !last_stop)
+            {
+                last_stop = 1;
+                mqt_init();
+            }
+        }
+    }
     if (ps_data > 1022)
     {
         page_chosen = (page_chosen % PAGE_MAX) + 1;
@@ -284,7 +327,6 @@ static void example_event_handle(void *pcontext, void *pclient, iotx_mqtt_event_
 
 static void mqtt_example_main(void *parameter)
 {
-    void *pclient = NULL;
     int res = 0;
     int loop_cnt = 0;
     iotx_mqtt_param_t mqtt_params;
@@ -327,15 +369,6 @@ static void mqtt_example_main(void *parameter)
 
     return;
 }
-
-#define THREAD_PRIORITY 25
-#define THREAD_STACK_SIZE 4096
-#define THREAD_TIMESLICE 5
-
-rt_thread_t MQTT_Thread = RT_NULL;
-rt_thread_t Snake_Thread = RT_NULL;
-rt_thread_t Infrared_Thread = RT_NULL;
-rt_thread_t Test_Thread = RT_NULL;
 
 void ath_init(void)
 {
@@ -420,10 +453,19 @@ void tst_init(void)
     }
 }
 MSH_CMD_EXPORT_ALIAS(tst_init, no_mqtt, "Infrared");
+// void evn_init(void)
+// {
+//     if(rt_event_create("my_event2", RT_IPC_FLAG_FIFO) != RT_EOK)
+//     {
+//         rt_kprintf("Create Event Failed!\n");
+//     }
+// }
 void my_project(void)
 {
     // /* 选择 NEC 解码器 */
     // ir_select_decoder("nec");
+
+    // evn_init();
 
     ath_init();
 
@@ -433,6 +475,6 @@ void my_project(void)
 
     inf_init();
 
-    tst_init();//不知道为什么不能在mqtt_init()之前，不然报错
+    tst_init(); // 不知道为什么不能在mqtt_init()之前，不然报错
 }
 MSH_CMD_EXPORT_ALIAS(my_project, myproject, run my project);

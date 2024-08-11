@@ -2,8 +2,11 @@
 #include <rtthread.h>
 #include <stdio.h>
 #include <malloc.h>
-#define PAGE_MAX 3
-                        // 当前方向
+#define PAGE_MAX 4
+#define EVENT_MQTT_ENABLE (1<<3)
+// struct rt_event my_event;
+
+
 void mytime();
 void greattime();
 void xy_round(int x, int y, int x2, int y2, int r, int ii);

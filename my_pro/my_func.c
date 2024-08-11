@@ -59,7 +59,6 @@ void greattime()
     //     rt_kprintf("NTP Server Time: %s", ctime((const time_t *)&cur_time));
     // }
 }
-
 void xy_round(int x, int y, int x2, int y2, int r, int ii)
 {
     // rt_kprintf("x:%d,y:%d,x2:%d,y2:%d,r:%d\n", x, y, x2, y2, r);

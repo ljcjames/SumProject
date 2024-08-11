@@ -20,6 +20,7 @@ extern rt_atomic_t snake_pressed;
 extern rt_atomic_t page_chosen;
 extern rt_atomic_t page_first;
 extern rt_atomic_t page_stop;
+extern rt_atomic_t mqtt_enable;
 extern int snake_max;
 extern char tmp[];
 
@@ -46,6 +47,10 @@ void snake_compare(rt_uint8_t key, rt_uint8_t repeat)
     // 菜单（切换页面）
     if (repeat == 0 && (rt_strcmp(tmp, "88") == 0 || rt_strcmp(tmp, "11") == 0))
     {
+        // if (page_chosen == 4)
+        // {
+        //     page_stop = 0;
+        // }
         page_chosen = (page_chosen % PAGE_MAX) + 1;
         page_first = 1;
         rt_kprintf("page_chosen = %d\n", page_chosen);
@@ -53,14 +58,23 @@ void snake_compare(rt_uint8_t key, rt_uint8_t repeat)
     // 确认（暂停、页面冻结）
     if (repeat == 0 && (rt_strcmp(tmp, "73") == 0))
     {
-        page_stop = (page_stop + 1) % 2;
-        if (page_stop == 1)
+        
+        if (page_chosen == 4&& page_stop == 0)
         {
-            lcd_show_string(240 - 24 * 3, 240 - 24, 24, "Stop");
+            // rt_event_send(&my_event, EVENT_MQTT_ENABLE);
+            mqtt_enable = (mqtt_enable + 1) % 2;
         }
         else
         {
-            lcd_show_string(240 - 24 * 3, 240 - 24, 24, "    ");
+            page_stop = (page_stop + 1) % 2;
+            if (page_stop == 1)
+            {
+                lcd_show_string(240 - 24 * 3, 240 - 24, 24, "Stop");
+            }
+            else
+            {
+                lcd_show_string(240 - 24 * 3, 240 - 24, 24, "    ");
+            }
         }
     }
 }
