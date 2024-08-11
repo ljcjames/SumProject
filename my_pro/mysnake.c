@@ -1,4 +1,4 @@
-#include <stdio.h>
+// #include <stdio.h>
 #include <rtthread.h>
 #include <stdbool.h>
 #include "my_func.h"
@@ -92,7 +92,7 @@ void snake_entry(void *parameter)
             new_head_x = (snake_list[snake_head][0] + snake_direction[now_direction][0] + SNAKE_MAX) % (SNAKE_MAX);
             new_head_y = (snake_list[snake_head][1] + snake_direction[now_direction][1] + SNAKE_MAX) % (SNAKE_MAX);
 
-            sprintf(tmp, "(%d,%d)", new_head_x, new_head_y);
+            rt_sprintf(tmp, "(%d,%d)", new_head_x, new_head_y);
             // rt_kprintf("head:%d,%d\n", snake_list[snake_head][0], snake_list[snake_head][1]);
             lcd_show_string(20, 20, 16, snake_dirshow[now_direction]);
             lcd_show_string(20 + 16 * 4, 20, 16, tmp);
@@ -104,7 +104,7 @@ void snake_entry(void *parameter)
                 snake_food[1] = rand() % SNAKE_MAX;
                 snake_address(snake_food[0], snake_food[1], SNAKE_SIZE, GREEN);
                 snake_len++;
-                sprintf(tmp, "%d", snake_len);
+                rt_sprintf(tmp, "%d", snake_len);
                 lcd_show_string(100, 105, 32, tmp);
                 // 防止蛇咬尾出现bug
                 if (snake_len >= SNAKE_MAX)

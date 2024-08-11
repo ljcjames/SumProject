@@ -120,24 +120,27 @@ static int example_subscribe(void *handle)
     int topic_len = 0;
 
     topic_len = strlen(fmt) + strlen(DEMO_PRODUCT_KEY) + strlen(DEMO_DEVICE_NAME) + 1;
-    topic = HAL_Malloc(topic_len);
+    topic = rt_malloc(topic_len);
     if (topic == NULL)
     {
         EXAMPLE_TRACE("memory not enough");
         return -1;
     }
     memset(topic, 0, topic_len);
-    HAL_Snprintf(topic, topic_len, fmt, DEMO_PRODUCT_KEY, DEMO_DEVICE_NAME);
+    // HAL_Snprintf(topic, topic_len, fmt, DEMO_PRODUCT_KEY, DEMO_DEVICE_NAME);
+    rt_snprintf(topic, topic_len, fmt, DEMO_PRODUCT_KEY, DEMO_DEVICE_NAME);
 
     res = IOT_MQTT_Subscribe(handle, topic, IOTX_MQTT_QOS0, example_message_arrive, NULL);
     if (res < 0)
     {
         EXAMPLE_TRACE("subscribe failed");
-        HAL_Free(topic);
+        // HAL_Free(topic);
+        rt_free(topic);
         return -1;
     }
 
-    HAL_Free(topic);
+    // HAL_Free(topic);
+    rt_free(topic);
     return 0;
 }
 int plus_lcd_y(int pls)
@@ -149,7 +152,7 @@ int plus_lcd_y(int pls)
 void easy_show_lcd(char *title, float Temp)
 {
     lcd_show_string(10, plus_lcd_y(24), 24, title);
-    sprintf(tmp, "%f", Temp);
+    rt_sprintf(tmp, "%f", Temp);
     lcd_show_string(10, plus_lcd_y(32), 32, tmp);
 }
 void show_lcd()
@@ -160,15 +163,15 @@ void show_lcd()
     easy_show_lcd("Brightness:(lux)", brightness);
     easy_show_lcd("Ps data:", (float)ps_data);
     // lcd_show_string(10, plus_lcd_y(10), 24, "Temperature:");
-    // sprintf(tmp, "%f", Temp);
+    // rt_sprintf(tmp, "%f", Temp);
     // lcd_show_string(10, plus_lcd_y(24), 32, tmp);
 
     // lcd_show_string(10, plus_lcd_y(32), 24, "Humidity:");
-    // sprintf(tmp, "%f", Humi);
+    // rt_sprintf(tmp, "%f", Humi);
     // lcd_show_string(10, plus_lcd_y(24), 32, tmp);
 
     // lcd_show_string(10, plus_lcd_y(32), 24, "Brightness:");
-    // sprintf(tmp, "%f(lux)", brightness);
+    // rt_sprintf(tmp, "%f(lux)", brightness);
     // lcd_show_string(10, plus_lcd_y(24), 32, tmp);
 }
 
@@ -211,7 +214,7 @@ void tmp_payload(void)
     // }
     // icm20608_get_accel(icm20608_device_t dev, rt_int16_t *accel_x, rt_int16_t *accel_y, rt_int16_t *accel_z)
     // memset(tmp, 0, sizeof(tmp));
-    // sprintf(tmp, "Temp: %.1f;Humi: %.1f;Count: %d\n", Temp, Humi,++cnt);
+    // rt_sprintf(tmp, "Temp: %.1f;Humi: %.1f;Count: %d\n", Temp, Humi,++cnt);
     // rt_kprintf("\n%f %f tmp:%s\n",Humi,Temp,tmp);
     // make_file();
     if (page_chosen == 2 && !page_stop)
@@ -271,7 +274,7 @@ void tmp_payload(void)
         page_chosen = (page_chosen % PAGE_MAX) + 1;
         page_first = 1;
     }
-    sprintf(tmp, "{\"params\":{\"temperature\":%.2f,\"humidity\":%.2f,\"LightLux\":%.2f,\"Psdata\":%d,\"Snakelen\":%d}}", Temp, Humi, brightness, ps_data, snake_len);
+    rt_sprintf(tmp, "{\"params\":{\"temperature\":%.2f,\"humidity\":%.2f,\"LightLux\":%.2f,\"Psdata\":%d,\"Snakelen\":%d}}", Temp, Humi, brightness, ps_data, snake_len);
     return;
 }
 void test_lcd()
@@ -299,24 +302,28 @@ static int example_publish(void *handle)
     // strcpy(payload,tmp_payload());
     // rt_kprintf("payload:%s\n",payload);
     topic_len = strlen(fmt) + strlen(DEMO_PRODUCT_KEY) + strlen(DEMO_DEVICE_NAME) + 1;
-    topic = HAL_Malloc(topic_len);
+    // topic = HAL_Malloc(topic_len);
+    topic = rt_malloc(topic_len);
     if (topic == NULL)
     {
         EXAMPLE_TRACE("memory not enough");
         return -1;
     }
     memset(topic, 0, topic_len);
-    HAL_Snprintf(topic, topic_len, fmt, DEMO_PRODUCT_KEY, DEMO_DEVICE_NAME);
+    // HAL_Snprintf(topic, topic_len, fmt, DEMO_PRODUCT_KEY, DEMO_DEVICE_NAME);
+    rt_snprintf(topic, topic_len, fmt, DEMO_PRODUCT_KEY, DEMO_DEVICE_NAME);
 
     res = IOT_MQTT_Publish_Simple(0, topic, IOTX_MQTT_QOS0, payload, strlen(payload));
     if (res < 0)
     {
         EXAMPLE_TRACE("publish failed, res = %d", res);
-        HAL_Free(topic);
+        // HAL_Free(topic);
+        rt_free(topic);
         return -1;
     }
 
-    HAL_Free(topic);
+    // HAL_Free(topic);
+    rt_free(topic);
     return 0;
 }
 
@@ -369,6 +376,10 @@ static void mqtt_example_main(void *parameter)
 
     return;
 }
+
+
+
+
 
 void ath_init(void)
 {
