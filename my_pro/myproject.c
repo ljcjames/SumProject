@@ -118,8 +118,8 @@ static int example_subscribe(void *handle)
     const char *fmt = "/%s/%s/user/get";
     char *topic = NULL;
     int topic_len = 0;
-
-    topic_len = strlen(fmt) + strlen(DEMO_PRODUCT_KEY) + strlen(DEMO_DEVICE_NAME) + 1;
+    
+    topic_len = rt_strlen(fmt) + rt_strlen(DEMO_PRODUCT_KEY) + rt_strlen(DEMO_DEVICE_NAME) + 1;
     topic = rt_malloc(topic_len);
     if (topic == NULL)
     {
@@ -301,7 +301,7 @@ static int example_publish(void *handle)
     char *payload = tmp;
     // strcpy(payload,tmp_payload());
     // rt_kprintf("payload:%s\n",payload);
-    topic_len = strlen(fmt) + strlen(DEMO_PRODUCT_KEY) + strlen(DEMO_DEVICE_NAME) + 1;
+    topic_len = rt_strlen(fmt) + rt_strlen(DEMO_PRODUCT_KEY) + rt_strlen(DEMO_DEVICE_NAME) + 1;
     // topic = HAL_Malloc(topic_len);
     topic = rt_malloc(topic_len);
     if (topic == NULL)
@@ -313,7 +313,7 @@ static int example_publish(void *handle)
     // HAL_Snprintf(topic, topic_len, fmt, DEMO_PRODUCT_KEY, DEMO_DEVICE_NAME);
     rt_snprintf(topic, topic_len, fmt, DEMO_PRODUCT_KEY, DEMO_DEVICE_NAME);
 
-    res = IOT_MQTT_Publish_Simple(0, topic, IOTX_MQTT_QOS0, payload, strlen(payload));
+    res = IOT_MQTT_Publish_Simple(0, topic, IOTX_MQTT_QOS0, payload, rt_strlen(payload));
     if (res < 0)
     {
         EXAMPLE_TRACE("publish failed, res = %d", res);
