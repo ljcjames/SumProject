@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #define PAGE_MAX 4
+#define LCD_MAX 240
 #define EVENT_MQTT_ENABLE (1<<3)
 // struct rt_event my_event;
 
