@@ -21,6 +21,31 @@
 | 0x88 | 菜单 |
 | 0x28 | 退出 |
 
+### LWIP+HTTPD
+[参考文章](https://club.rt-thread.org/ask/article/df1a7724c1e933a5.html)
+1. [下载链接](https://github.com/FateMouse/STM32-NETCONN_WEBserver/tree/master)
+2. 在`SConscript`通过以下方式将`fsdata.c` 排除构建
+``` python
+src     = [
+    'fs.c',
+    'httpd.c',
+    'httpd_cgi_ssi.c',
+    'web_server.c',
+]
+```
+3. 补充头文件、函数
+``` c
+#include <httpd.h>
+#ifdef LWIP_HTTPD_SSI 
+extern void httpd_ssi_init(void);
+#endif
+
+#ifdef LWIP_HTTPD_CGI 
+extern void httpd_cgi_init(void);
+#endif
+   ```
+4. 图片加载不出来、网页一直在加载
+5. ![alt text](image-1.png)![alt text](image.png)
 
 ### LCD 显示温湿度
 ![LCD温湿度](/my_picture/lcdtemp.jpg)
