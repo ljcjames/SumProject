@@ -82,7 +82,7 @@ void snake_entry(void *parameter)
                 if (rand() % 100 < 50)
                 {
                     new_direction = rand() % 3;
-                    now_direction = (now_direction + 3 + new_direction) % 4; // 防止反向,走回头路
+                    now_direction = (now_direction + 3 + new_direction) % 4; // 防止反向、走回头路
                 }
             }
             else
