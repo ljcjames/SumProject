@@ -1,0 +1,28 @@
+{
+    "files.associations": {
+        "*.txt": "dockercompose",
+        "board.h": "c",
+        "rtthread.h": "c",
+        "drv_gpio.h": "c",
+        "rtdevice.h": "c",
+        "led": "c",
+        "rtdbg.h": "c",
+        "drv_common.h": "c",
+        "my_func.h": "c",
+        "stdbool.h": "c",
+        "mysnake.h": "c",
+        "rthw.h": "c",
+        "hwtimer.h": "c",
+        "wewin.h": "c",
+        "rttlogo.h": "c",
+        "chrono": "c",
+        "condition_variable": "c",
+        "ctime": "c",
+        "mutex": "c",
+        "thread": "c",
+        "stdio.h": "c",
+        "rtatomic.h": "c",
+        "time.h": "c",
+        "icmp.h": "c"
+    }
+}

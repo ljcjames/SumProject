@@ -1,0 +1,213 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "windows": {
+        "options": {
+            "shell": {
+                "executable": "cmd.exe",
+                "args": [
+                    "/d",
+                    "/c",
+                    "c:\\develop\\env2\\tools\\bin\\env-init.bat && "
+                ]
+            }
+        },
+    },
+    "tasks": [
+        {
+            "label": "更新软件包",
+            "type": "shell",
+            "command": "call ${workspaceFolder}\\tools\\pkgs_update.bat",
+            "problemMatcher": []
+        },
+        {
+            "label": "PyConfig",
+            "type": "shell",
+            "command": "tools\\mc_py.bat",
+            "problemMatcher": []
+        },
+        {
+            "label": "编译(j8)",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "-j8"
+            ],
+            "options": {},
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "编译(j1)",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "-j1"
+            ],
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "编译下载(j1)",
+            "type": "shell",
+            "command": "scons -j1 && copy /z ${workspaceFolder}\\rtthread.bin g:\\",
+            "args": [],
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "编译下载(j8)",
+            "type": "shell",
+            // "command": "scons -j8 && pyocd flash -t stm32l431rctx ${workspaceFolder}/rt-thread.elf",
+            "command": "scons -j8 && copy /z ${workspaceFolder}\\rtthread.bin g:\\",
+            "args": [],
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "清理",
+            "type": "shell",
+            "command": "scons -c && cd ${workspaceFolder} && rm -fv *.elf *.hex *.bin *.map",
+            "args": [],
+            "problemMatcher": []
+        },
+        {
+            "label": "下载固件(pyocd)",
+            "type": "shell",
+            // "command": "pyocd flash -t stm32l431rctx ${workspaceFolder}/rt-thread.elf",
+            "command": "copy /z ${workspaceFolder}/rtthread.bin g:\\",
+            "args": [],
+
+            "args": [],
+            "problemMatcher": []
+        },
+        {
+            "label": "更新 C/C++ 路径",
+            "type": "shell",
+            "command": "scons --target=vsc -s",
+            "args": [],
+            "problemMatcher": []
+        },
+        {
+            "label": "全部编译(j1)",
+            "type": "shell",
+            "command": "scons -c && cd ${workspaceFolder} && rm -fv *.elf *.hex *.bin *.map && scons -j1",
+            "args": [],
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "全部编译(j8)",
+            "type": "shell",
+            "command": "scons -c && cd ${workspaceFolder} && rm -fv *.elf *.hex *.bin *.map && scons -j8",
+            "args": [],
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "全部编译下载(j8)",
+            "type": "shell",
+            // "command": "scons -c && cd ${workspaceFolder} && rm -fv *.elf *.hex *.bin *.map && scons -j8 && pyocd flash -t stm32l431rctx ${workspaceFolder}/rt-thread.elf",
+            "command": "scons -c && cd ${workspaceFolder} && rm -fv *.elf *.hex *.bin *.map && scons -j8 && copy /z ${workspaceFolder}/rtthread.bin g:\\",
+            "args": [],
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+    ]
+}
